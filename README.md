@@ -10,6 +10,8 @@ public interface BowlingGame {
     int Score();
   }
 
+    // string History(); //optional, can be extended if you want to continue
+
 ```
 
 ## Wanna continue developing fantacy

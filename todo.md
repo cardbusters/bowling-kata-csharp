@@ -1,0 +1,1 @@
+- [] How do we know, if previews Frame had Spare or Strike?

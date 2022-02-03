@@ -15,31 +15,25 @@ namespace bowling_kata_csharp1
         [Fact]
         public void GivenFrameWithZeroZeroThenScoreShouldBeZero()
         {
-            _bowlingGame.OpenFrame(0, 0);
-
-            var expectedScore = 0;
-            var actualScore = _bowlingGame.Score();
-
-            Assert.Equal(expectedScore, actualScore);
+            ExecutingThrow(firstThrow: 0, secondThrow: 0, expectedScore: 0);
         }
 
         [Fact]
         public void GivenFrameWithOneAndZeroThenScoreShouldBeOne()
         {
-            _bowlingGame.OpenFrame(1, 0);
-
-            var expectedScore = 1;
-            var actualScore = _bowlingGame.Score();
-
-            Assert.Equal(expectedScore, actualScore);
+            ExecutingThrow(firstThrow: 1, secondThrow: 0, expectedScore: 1);
         }
 
         [Fact]
         public void GivenFrameWithZeroAndOneThenScoreShouldBeOne()
         {
-            _bowlingGame.OpenFrame(0, 1);
+            ExecutingThrow(firstThrow: 0, secondThrow: 1, expectedScore: 1);
+        }
 
-            var expectedScore = 1;
+        private void ExecutingThrow(int firstThrow, int secondThrow, int expectedScore)
+        {
+            _bowlingGame.OpenFrame(firstThrow, secondThrow);
+
             var actualScore = _bowlingGame.Score();
 
             Assert.Equal(expectedScore, actualScore);

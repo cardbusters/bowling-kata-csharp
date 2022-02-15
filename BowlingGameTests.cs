@@ -77,5 +77,28 @@ namespace bowling_kata_csharp1
             var actualScore = _bowlingGame.Score();
             Assert.Equal(expectedScore, actualScore);
         }
+
+        [Fact]
+        public void GivenTwoFramesWithSpareAndFourAndOneThenScoreShouldBeNineTeen()
+        {
+            _bowlingGame.OpenFrame(5, 5);
+            _bowlingGame.OpenFrame(4, 1);
+
+            var expectedScore = 19;
+            var actualScore = _bowlingGame.Score();
+            Assert.Equal(expectedScore, actualScore);
+        }
+
+        [Fact]
+        public void GivenThreeFramesTwoAndFiveAndStrikeAndOneThenScoreShouldBeNineTeen()
+        {
+            _bowlingGame.OpenFrame(2, 5);
+            _bowlingGame.OpenFrame(10, 0);
+            _bowlingGame.OpenFrame(1, 0);
+
+            var expectedScore = 19;
+            var actualScore = _bowlingGame.Score();
+            Assert.Equal(expectedScore, actualScore);
+        }
     }
 }

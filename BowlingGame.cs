@@ -16,35 +16,45 @@ namespace bowling_kata_csharp1
 
         internal int Score()
         {
-            //TODO: move this logic to the OpenFrame method
-            //===========>>
-            const int frameIndex = 0;
+            for(int i = 0; i < _frameHistory.Count; i++)
+            {
+                RecalculateFrames(i);
+            }
 
+            return _frameHistory.Sum(p => p.Score);
+        }
+
+        private void RecalculateFrames(int frameIndex)
+        {
             if (_frameHistory[frameIndex].IsStrike()) //first throw is strike
             {
-                if (_frameHistory[frameIndex + 1].IsStrike()) //second throw is also strike
+                if (_frameHistory.Count > frameIndex + 1 )
                 {
-                    var newScore = _frameHistory[frameIndex].Score + _frameHistory[frameIndex + 1].Score + _frameHistory[frameIndex + 2].ThrowOne;
-                    _frameHistory[frameIndex] = new Frame(_frameHistory[frameIndex].ThrowOne, _frameHistory[frameIndex].ThrowTwo, newScore);
+                    if (_frameHistory[frameIndex + 1].IsStrike()) //second throw is also strike
+                    {
 
-                    newScore = _frameHistory[frameIndex + 1].Score + _frameHistory[frameIndex + 2].Score;
-                    _frameHistory[frameIndex + 1] = new Frame(_frameHistory[frameIndex + 1].ThrowOne, _frameHistory[frameIndex + 1].ThrowTwo, newScore);
-                }
-                else //second throw is not a strike
-                {
-                    var newScore = _frameHistory[frameIndex].Score + _frameHistory[frameIndex + 1].Score;
-                    _frameHistory[frameIndex] = new Frame(_frameHistory[frameIndex].ThrowOne, _frameHistory[frameIndex].ThrowTwo, newScore);
+                        var newScore = _frameHistory[frameIndex].Score + _frameHistory[frameIndex + 1].Score + _frameHistory[frameIndex + 2].ThrowOne;
+                        _frameHistory[frameIndex] = new Frame(_frameHistory[frameIndex].ThrowOne, _frameHistory[frameIndex].ThrowTwo, newScore);
+
+                        if(_frameHistory.Count > frameIndex + 2)
+                        {
+                            newScore = _frameHistory[frameIndex + 1].Score + _frameHistory[frameIndex + 2].Score;
+                            _frameHistory[frameIndex + 1] = new Frame(_frameHistory[frameIndex + 1].ThrowOne, _frameHistory[frameIndex + 1].ThrowTwo, newScore);
+                        }
+                    }
+                    else //second throw is not a strike
+                    {
+                        var newScore = _frameHistory[frameIndex].Score + _frameHistory[frameIndex + 1].Score;
+                        _frameHistory[frameIndex] = new Frame(_frameHistory[frameIndex].ThrowOne, _frameHistory[frameIndex].ThrowTwo, newScore);
+                    }
                 }
             }
 
-            if (_frameHistory[frameIndex].IsSpare())
+            if (_frameHistory[frameIndex].IsSpare() && _frameHistory.Count > frameIndex + 1)
             {
                 var newScore = _frameHistory[frameIndex].Score + _frameHistory[frameIndex + 1].ThrowOne;
                 _frameHistory[frameIndex] = new Frame(_frameHistory[frameIndex].ThrowOne, _frameHistory[frameIndex].ThrowTwo, newScore);
             }
-            //<<=============
-
-            return _frameHistory.Sum(p => p.Score);
         }
 
         private class Frame
@@ -59,7 +69,6 @@ namespace bowling_kata_csharp1
                 this.ThrowTwo = secondThrow;
                 this.Score = totalFrame;
             }
-
             internal bool IsStrike()
             {
                 return ThrowOne == Score && Score == 10;
@@ -78,7 +87,6 @@ namespace bowling_kata_csharp1
                 {
                     throw new ArgumentOutOfRangeException();
                 }
-
                 return new Frame(firstThrow, secondThrow, totalFrame);
             }
         }

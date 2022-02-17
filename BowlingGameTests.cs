@@ -66,17 +66,6 @@ namespace bowling_kata_csharp1
             var actualScore = _bowlingGame.Score();
             Assert.Equal(expectedScore, actualScore);
         }
-        [Fact]
-        public void GivenThreeFramesWithStrikeAndStrikeAndThreeAndTwoThenScoreShouldFourtyThree()
-        {
-            _bowlingGame.OpenFrame(10, 0); //X - 23
-            _bowlingGame.OpenFrame(10, 0); //X - 15
-            _bowlingGame.OpenFrame(3, 2);  //5 - 5
-
-            var expectedScore = 43;
-            var actualScore = _bowlingGame.Score();
-            Assert.Equal(expectedScore, actualScore);
-        }
 
         [Fact]
         public void GivenTwoFramesWithSpareAndFourAndOneThenScoreShouldBeNineTeen()
@@ -89,14 +78,29 @@ namespace bowling_kata_csharp1
             Assert.Equal(expectedScore, actualScore);
         }
 
-        [Fact]
-        public void GivenThreeFramesTwoAndFiveAndStrikeAndOneThenScoreShouldBeNineTeen()
+        [Theory]
+        [InlineData(10, 0, 10, 0, 3, 2, 43)]
+        [InlineData(2, 5, 10, 0, 1, 0, 19)]
+        public void TestsWithThreeFrames(int frame11, int frame12, int frame21, int frame22, int frame31, int frame32, int expectedScore)
         {
-            _bowlingGame.OpenFrame(2, 5);
-            _bowlingGame.OpenFrame(10, 0);
-            _bowlingGame.OpenFrame(1, 0);
+            _bowlingGame.OpenFrame(frame11, frame12);
+            _bowlingGame.OpenFrame(frame21, frame22);
+            _bowlingGame.OpenFrame(frame31, frame32);
 
-            var expectedScore = 19;
+            var actualScore = _bowlingGame.Score();
+            Assert.Equal(expectedScore, actualScore);
+        }
+
+        [Theory]
+        [InlineData(1, 0, 1, 9, 10, 0, 1, 0, 33)]
+        [InlineData(1, 0, 1, 0, 1, 0, 10, 0, 13)]
+        public void TestsWithFourFrames(int frame11, int frame12, int frame21, int frame22, int frame31, int frame32, int frame41, int frame42, int expectedScore)
+        {
+            _bowlingGame.OpenFrame(frame11, frame12);
+            _bowlingGame.OpenFrame(frame21, frame22);
+            _bowlingGame.OpenFrame(frame31, frame32);
+            _bowlingGame.OpenFrame(frame41, frame42);
+
             var actualScore = _bowlingGame.Score();
             Assert.Equal(expectedScore, actualScore);
         }
